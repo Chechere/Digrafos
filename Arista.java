@@ -8,4 +8,5 @@
 public class Arista {
     private double peso;
     private int nodoI, nodoF;
+    private int a;
 }
