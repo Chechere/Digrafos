@@ -3,13 +3,14 @@ public class Grafo {
     int sigEspacioVacio;
 
     /**
-     * Grafo Constructor - Genera un nuevo gráfico vacio con un maximo de aristas establecidos.
+     * Grafo Constructor - Genera un nuevo gráfico vacio con un maximo de aristas 
+     * establecidos.
      *
      * @param numeroAristas Maximo de aristas en el grafo.
      */
     public Grafo(int numeroAristas) {
         this.aristas = new Arista[numeroAristas];
-        this.sigEspacioVacio = 0; 
+        this.sigEspacioVacio= 0; 
 
         for(int i = 0; i < numeroAristas; i++) {
             this.aristas[i] = new Arista(0, 0, 0);
@@ -18,7 +19,8 @@ public class Grafo {
 
     
     /**
-     * Método insertarArista - Intenta insertar una arista dentro del grafo. Si no puede insertarse no salta error.
+     * Método insertarArista - Intenta insertar una arista dentro del grafo. 
+     * Si no puede insertarse no salta error.
      *
      * @param a Arista a insertar
      */
@@ -26,7 +28,7 @@ public class Grafo {
         if(!this.listaLlena() && this.existeArista(a) == -1) {
             int i = 0;
 
-            while(i < this.sigEspacioVacio && a.vaDespuesDe(this.aristas[i])) {
+            while(i < this.sigEspacioVacio&& a.vaDespuesDe(this.aristas[i])) {
                 i++;
             }
 
@@ -35,7 +37,6 @@ public class Grafo {
             }
 
             this.aristas[i] = new Arista(a);
-
             this.sigEspacioVacio++;
         }
     }
@@ -73,7 +74,7 @@ public class Grafo {
         if(!this.listaVacia()) {
             boolean existe = false;
 
-            while(i < this.sigEspacioVacio && !existe) {
+            while(i < this.sigEspacioVacio&& !existe) {
                 i++;
 
                 existe = this.aristas[i].igualQue(a);
@@ -101,10 +102,51 @@ public class Grafo {
                 this.aristas[i].obtenerNodoFinal(),
                 this.aristas[i].obtenerPeso());
         }
+    }
+    
+    public void modificarPesoArista(Arista a) {
+        if(a != null && !this.listaVacia()) {
+            int indice = this.existeArista(a);
         
-        char nada = Teclado.leerCaracter("\nPulsa <ENTER> para continuar");
+            if(indice != -1) {              
+                this.aristas[indice] = new Arista(a);
+            }
+        }
+    }
+    
+    public int bucles() {
+        int bucles = 0;
+        
+        if(!this.listaVacia()) {
+            for(int i = 0; i < this.sigEspacioVacio; i++) {
+                if(this.aristas[i].empiezaDondeAcaba(this.aristas[i])) {
+                    bucles++;
+                }
+            }
+        }
+        
+        return bucles;
     }
 
+    public int nodosTerminales() {
+        int terminales = 0;
+        if(!this.listaVacia()) {
+            for(int i = 0; i < this.sigEspacioVacio; i++) {
+                int j = 0;
+                
+                while(j < this.sigEspacioVacio && 
+                    !this.aristas[i].empiezaDondeAcaba(this.aristas[i])) {
+                    j++;
+                }
+                
+                if(j == this.sigEspacioVacio) {
+                    terminales++;
+                }
+            }
+        }
+        
+        return terminales;
+    }
     
     /**
      * Método listaVacia - Comprueba si la lista esta vacia.
@@ -112,7 +154,7 @@ public class Grafo {
      * @return True si esta vacia, sino False.
      */
     private boolean listaVacia() {
-        return this.sigEspacioVacio == 0;
+        return this.sigEspacioVacio== 0;
     }
 
     /**
@@ -121,6 +163,6 @@ public class Grafo {
      * @return True si esta llena, sino False;
      */
     private boolean listaLlena() {
-        return this.sigEspacioVacio == this.aristas.length;
+        return this.sigEspacioVacio== this.aristas.length;
     }
 }
