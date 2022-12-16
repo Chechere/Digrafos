@@ -126,6 +126,7 @@ public class Grafo {
         return bucles;
     }
 
+
     public int nodosTerminales() {
         int terminales = 0;
         if(!this.listaVacia()) {
@@ -145,7 +146,7 @@ public class Grafo {
         
         return terminales;
     }
-
+    
     /**
      * Método listaVacia - Comprueba si la lista esta vacia.
      *

@@ -68,7 +68,6 @@ public class Arista {
     public boolean igualQue(Arista a) {
         return this.obtenerNodoInicial() == a.obtenerNodoInicial() &&
                 this.obtenerNodoFinal() == a.obtenerNodoFinal();
-    
     }
     
     public boolean empiezaDondeAcaba(Arista a) {
