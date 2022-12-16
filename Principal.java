@@ -18,8 +18,7 @@ public class Principal {
             accion = Teclado.leerEntero("\nAccion: ");
 
             switch(accion) {
-                case 1:
-                    
+                case 1:                    
                     break;
                 case 2:
                     grafoT.insertarArista(obtenerNuevaArista());
