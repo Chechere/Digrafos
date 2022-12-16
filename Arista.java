@@ -68,9 +68,24 @@ public class Arista {
     public boolean igualQue(Arista a) {
         return this.obtenerNodoInicial() == a.obtenerNodoInicial() &&
                 this.obtenerNodoFinal() == a.obtenerNodoFinal();
+    
     }
     
     public boolean empiezaDondeAcaba(Arista a) {
         return this.nodoI == a.nodoF;
+    }
+
+    /**
+     * Método que comprueba si existe una arista entre un nodo Origen y un nodo Final
+     * y si existe devuelve su peso.
+     * 
+     * @return Peso de la arista comprobada. 
+     */
+    public double existeArista(int nodoI, int nodoF){
+        double peso = 0;
+        if(nodoI == obtenerNodoInicial() && nodoF == obtenerNodoFinal())
+            peso = obtenerPeso();
+            
+        return peso;
     }
 }

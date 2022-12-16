@@ -3,9 +3,7 @@ public class Grafo {
     int sigEspacioVacio;
 
     /**
-     * Grafo Constructor - Genera un nuevo gráfico vacio con un maximo de aristas 
-     * establecidos.
-     *
+     * Grafo Constructor - Genera un nuevo gráfo vacio con un maximo de aristas establecidos.
      * @param numeroAristas Maximo de aristas en el grafo.
      */
     public Grafo(int numeroAristas) {
@@ -147,7 +145,7 @@ public class Grafo {
         
         return terminales;
     }
-    
+
     /**
      * Método listaVacia - Comprueba si la lista esta vacia.
      *
@@ -157,6 +155,24 @@ public class Grafo {
         return this.sigEspacioVacio== 0;
     }
 
+    
+    /**
+     * Método gradoNodo - Devuelve el grado de un nodo.
+     * 
+     * @return Numero de ARISTAS que tienen el mismo nodo Incial.
+     */
+    /*public int gradoNodo(int nodo){
+        int contador = 0;
+        for(int i = 0 ; i >= ;i++){
+            
+            contador++;
+        }
+        
+       
+        return contador;
+    }
+    */
+    
     /**
      * Método listaLlena - Comprueba si la lista esta llena.
      *
