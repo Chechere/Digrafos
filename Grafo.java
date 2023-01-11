@@ -105,14 +105,20 @@ public class Grafo {
         int indice = -1;
 
         if(a != null && !this.listaVacia()) {
-            int i = 0;
-
-            while(i < this.sigEspVacio && !this.aristaVaDespuesDe(i, a)) {
-                i++;
+            int i = 0, m, s = this.sigEspVacio - 1;
+            
+            while(i != s) {
+                m = (i + s) / 2;
+                
+                if(this.aristaVaDespuesDe(m, a)) {
+                    s = m;
+                } else {
+                    i = m + 1;
+                }
             }
-
-            if(i != this.sigEspVacio && this.aristas[i].mismaDireccionQue(a)) {
-                indice = i - 1;
+            
+            if(this.aristas[i].mismaDireccionQue(a)) {
+                indice = i;
             }
         }
 
@@ -130,12 +136,10 @@ public class Grafo {
         double peso = -1.0;
         
         if(a != null && !this.listaVacia()) {
-            int i = 0;
-
             int indice = this.existeArista(a);
 
             if(indice != -1) {
-                peso = this.aristas[i].peso();
+                peso = this.aristas[indice].peso();
             }
         }
 
@@ -202,15 +206,28 @@ public class Grafo {
 
         if(!this.listaVacia()) {
             for(int i = 0; i < this.sigEspVacio; i++) {
-                int j = 0;
-
-                while(j < this.sigEspVacio && 
-                    this.aristas[j].nodoInicial() < this.aristas[i].nodoFinal()) {
+                boolean repetido = false;
+                int j = i - 1;
+                
+                while(j >= 0 && !repetido) {
+                    if(this.aristas[j].nodoFinal() == this.aristas[i].nodoFinal()) {
+                        repetido = true;
+                    }
+                    
+                    j--;
+                }
+                
+                if(!repetido) {
+                    j = 0;
+                    
+                    while(j < this.sigEspVacio && 
+                        this.aristas[j].nodoInicial() < this.aristas[i].nodoFinal()) {                        
                         j++;
                     }
-
-                if(this.aristas[j].nodoInicial() != this.aristas[i].nodoFinal()) {
-                    terminales++;
+                    
+                    if(j == this.sigEspVacio || this.aristas[j].nodoInicial() != this.aristas[i].nodoFinal()) {
+                        terminales++;
+                    }
                 }
             }
         }
@@ -234,7 +251,7 @@ public class Grafo {
             int i = 0, j = 0;
 
             while(i < this.sigEspVacio && j < grafo.sigEspVacio) {
-                if(this.aristaVaDespuesDe(i, grafo.aristas[i])) {
+                if(this.aristaVaDespuesDe(i, grafo.aristas[j])) {
                     resultado.insertarArista(grafo.aristas[j]);
                     
                     j++;
@@ -278,13 +295,15 @@ public class Grafo {
      */
     public int gradoNodo(int nodo) {
         int aristas = 0;
-
-        for(int i = 0; i < this.sigEspVacio; i++) {
+        
+        int i = 0;
+        while(i < this.sigEspVacio && this.aristas[i].nodoInicial() <= nodo) {
             if(this.aristas[i].nodoInicial() == nodo) {
                 aristas++;
             }
+            
+            i++;
         }
-
         return aristas;
     }
 
@@ -300,10 +319,14 @@ public class Grafo {
         Grafo subGrafo = new Grafo(this.aristas.length);
 
         if(!this.listaVacia()) {
-            for(int i = 0; i < this.sigEspVacio; i++) {
+            int i = 0;
+            
+            while(i < this.sigEspVacio && this.aristas[i].nodoInicial() <= nodoCentral) {
                 if(this.aristas[i].nodoInicial() == nodoCentral) {
                     subGrafo.insertarArista(new Arista(this.aristas[i]));
                 }
+                
+                i++;
             }
         }
 
@@ -323,7 +346,7 @@ public class Grafo {
      *          (Tenga que pasar por menos aristas).
      */
     public void alcanzabilidadNodo(int nodo) {
-        NodoAlcanzable[] nodos = new NodoAlcanzable[this.sigEspVacio * 2];
+        NodoAlcanzable[] nodos = new NodoAlcanzable[this.sigEspVacio];
         int sigNodoVacio = 0;
 
         int i = 0;
@@ -390,29 +413,33 @@ public class Grafo {
     }
 
     /**
-     * Método aristaVaDespuesDe - Comprueba si una arista va despues
-     *                            de otra en la lista.
+     * Método aristaVaDespuesDe - Comprueba si una arista de la lista
+     *                            va despues de otra dada.
      *
-     * @param a1 Arista a comprobar si va despues de a2
+     * @param indice Indice de la arista en la lista a comprobar.
      *
-     * @param a2 Arista de referencia para a1.
+     * @param a Arista de referencia.
      *
-     * @return True si a1 va despues de a2, sino False.
+     * @return True si de la lista va despues de a, sino False.
+     *         Tambien devuelve False si la arista a es nulo
+     *         o el indice no esta en el intervalo [0, sigEspVacio).
      *
      * @remark Tambien devuelve False si ambas tienen el mismo 
      *         nodo inicial y final
      */
-    private boolean aristaVaDespuesDe(int indice, Arista a2) {
-        boolean vaAntes = false;
+    private boolean aristaVaDespuesDe(int indice, Arista a) {
+        boolean vaDespues = false;
 
-        if(this.aristas[indice].nodoInicial() > a2.nodoInicial()) {
-            vaAntes = true;
-        } else if(this.aristas[indice].nodoInicial() == a2.nodoInicial() && 
-                    this.aristas[indice].nodoFinal() > a2.nodoFinal()) {
-            vaAntes = true;
+        if(indice >= 0 && indice < this.sigEspVacio && a != null) {
+            if(this.aristas[indice].nodoInicial() > a.nodoInicial()) {
+                vaDespues = true;
+            } else if(this.aristas[indice].nodoInicial() == a.nodoInicial() && 
+                        this.aristas[indice].nodoFinal() > a.nodoFinal()) {
+                vaDespues = true;
+            }
         }
 
-        return vaAntes;
+        return vaDespues;
     }
 
     /**
