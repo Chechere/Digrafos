@@ -67,4 +67,30 @@ public class Arista {
         return this.nodoI == a.nodoI &&
                 this.nodoF == a.nodoF;
     }
+    
+    /**
+     * Método aristaVaDespuesDe - Comprueba si esta arista
+     *                            va despues de otra dada.
+     *
+     * @param a Arista de referencia.
+     *
+     * @return True si esta arista va despues de la arista a, 
+     *         sino False. Tambien devuelve False si la 
+     *         arista a es nulo o si ambas son tienen mismo
+     *         nodo inicial y final.     
+     */
+    public boolean vaDespuesDe(Arista a) {
+        boolean vaDespues = false;
+        
+        if(a != null) {
+            if(this.nodoI > a.nodoI) {
+                vaDespues = true;
+            } else if(this.nodoI == a.nodoI &&
+                        this.nodoF > a.nodoF) {
+                vaDespues = true;
+            }
+        }
+        
+        return false;    
+    }
 }

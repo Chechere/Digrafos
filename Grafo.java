@@ -50,8 +50,8 @@ public class Grafo {
     }
 
     /**
-     * Método insertarArista - Intenta insertar una arista dentro del grafo.
-     * Si no puede insertarse no salta error.
+     * Método insertarArista - Intenta insertar una 
+     *                         arista dentro del grafo.
      *
      * @param a Arista a insertar
      */
@@ -59,7 +59,7 @@ public class Grafo {
         if(a != null && !this.listaLlena() && this.existeArista(a) == -1) {
             int i = 0;
 
-            while(i < this.sigEspVacio && !this.aristaVaDespuesDe(i, a)) {
+            while(i < this.sigEspVacio && a.vaDespuesDe(this.aristas[i])) {
                 i++;
             }
 
@@ -110,7 +110,7 @@ public class Grafo {
             while(i != s) {
                 m = (i + s) / 2;
                 
-                if(this.aristaVaDespuesDe(m, a)) {
+                if(this.aristas[m].vaDespuesDe(a)) {
                     s = m;
                 } else {
                     i = m + 1;
@@ -205,27 +205,25 @@ public class Grafo {
         int terminales = 0;
 
         if(!this.listaVacia()) {
+            int[] nodos = new int[this.sigEspVacio];
+            int sigNodoVacio = 0;
+            
+            for(int i = 0; i < nodos.length; i++) {
+                nodos[i] = 0;
+            }
+            
             for(int i = 0; i < this.sigEspVacio; i++) {
-                boolean repetido = false;
-                int j = i - 1;
+                int j = 0;
                 
-                while(j >= 0 && !repetido) {
-                    if(this.aristas[j].nodoFinal() == this.aristas[i].nodoFinal()) {
-                        repetido = true;
-                    }
-                    
-                    j--;
+                while(j < sigNodoVacio && nodos[j] != this.aristas[i].nodoFinal()) {
+                    j++;
                 }
                 
-                if(!repetido) {
-                    j = 0;
+                if(j == sigNodoVacio) {
+                    nodos[sigNodoVacio] = this.aristas[i].nodoFinal();
+                    sigNodoVacio++;
                     
-                    while(j < this.sigEspVacio && 
-                        this.aristas[j].nodoInicial() < this.aristas[i].nodoFinal()) {                        
-                        j++;
-                    }
-                    
-                    if(j == this.sigEspVacio || this.aristas[j].nodoInicial() != this.aristas[i].nodoFinal()) {
+                    if(this.gradoNodo(this.aristas[i].nodoFinal()) == 0) {
                         terminales++;
                     }
                 }
@@ -251,7 +249,7 @@ public class Grafo {
             int i = 0, j = 0;
 
             while(i < this.sigEspVacio && j < grafo.sigEspVacio) {
-                if(this.aristaVaDespuesDe(i, grafo.aristas[j])) {
+                if(this.aristas[i].vaDespuesDe(grafo.aristas[j])) {
                     resultado.insertarArista(grafo.aristas[j]);
                     
                     j++;
@@ -410,36 +408,6 @@ public class Grafo {
                                 nodos[i].distancia(),
                                 nodos[i].pesoAcumulado());
         }
-    }
-
-    /**
-     * Método aristaVaDespuesDe - Comprueba si una arista de la lista
-     *                            va despues de otra dada.
-     *
-     * @param indice Indice de la arista en la lista a comprobar.
-     *
-     * @param a Arista de referencia.
-     *
-     * @return True si de la lista va despues de a, sino False.
-     *         Tambien devuelve False si la arista a es nulo
-     *         o el indice no esta en el intervalo [0, sigEspVacio).
-     *
-     * @remark Tambien devuelve False si ambas tienen el mismo 
-     *         nodo inicial y final
-     */
-    private boolean aristaVaDespuesDe(int indice, Arista a) {
-        boolean vaDespues = false;
-
-        if(indice >= 0 && indice < this.sigEspVacio && a != null) {
-            if(this.aristas[indice].nodoInicial() > a.nodoInicial()) {
-                vaDespues = true;
-            } else if(this.aristas[indice].nodoInicial() == a.nodoInicial() && 
-                        this.aristas[indice].nodoFinal() > a.nodoFinal()) {
-                vaDespues = true;
-            }
-        }
-
-        return vaDespues;
     }
 
     /**
