@@ -1,79 +1,117 @@
 public class NodoAlcanzable {
-    private int nodoI, nodoF, dist;
-    private double pesoAcum;
+    private int nodo;
+    private int distancia;
+    private double peso;
 
     /**
-     * Genera un nuevo nodoAlcanzable.
+     * Constructor NodoAlcanzable - Guarda los datos de un
+     *                              nodo que es alcanzable
+     *                              por otro nodo.
      *
-     * @param nodoI Nodo que alcanza al nodoF.
+     * @param nodo Nodo que es alcanzable.
      *
-     * @param nodoF Nodo que es alcanzable por el nodoI.
+     * @param distancia Numero de aristas por las que hay
+     *                  que pasar para llegar al nodo.
      *
-     * @param dist Numero de aristas por las que hay que
-     *             pasar para ir desde el nodoI hasta el
-     *             nodoF.
-     *
-     * @param pesoAcum Suma de los pesos de las aristas
-     *                 por las que hay que pasar para
-     *                 ir desde nodoI hasta nodoF.
+     * @param peso Peso total de todas las aristas.
      */
-    public NodoAlcanzable(int nodoI, int nodoF, int dist, double pesoAcum) {
-        this.nodoI = nodoI;
-        this.nodoF = nodoF;
-        this.dist = dist;
-        this.pesoAcum = pesoAcum;
+    public NodoAlcanzable(int nodo, int distancia, double peso) {
+        this.nodo = nodo;
+        this.distancia = distancia;
+        this.peso = peso;
     }
 
     /**
-     * Genera un nuevo nodoAlcanzable con los datos de
-     * la arista y con distancia 1.
+     * Constructor NodoAlcanzable - Genera un clon de otro
+     *                              nodo alcanzable.
      *
-     * @param a Arista a usar para generar el nodoAlcanzable.
+     * @param n Nodo a clonar.
      */
-    public NodoAlcanzable(Arista a) {
-        this.nodoI = a.nodoInicial();
-        this.nodoF = a.nodoFinal();
-        this.dist = 1;
-        this.pesoAcum = a.peso();
+    public NodoAlcanzable(NodoAlcanzable n) {
+        this.nodo = n.nodo;
+        this.distancia = n.distancia;
+        this.peso = n.peso;
     }
 
     /**
-     * Método nodoInicial.
+     * Metodo nodo - Nodo que es alcanzable.
      *
-     * @return El nodo que puede alcanzar al nodo Final.
+     * @return Valor del nodo.
      */
-    public int nodoInicial() {
-        return this.nodoI;
+    public int nodo() {
+        return this.nodo;
     }
 
     /**
-     * Método nodoFinal.
+     * Metodo distancia - Numero de aristas por las que
+     *                    hay que pasar para llegar al
+     *                    nodo.
      *
-     * @return El nodo que es alcanzable por el nodo Inicial.
-     */
-    public int nodoFinal() {
-        return this.nodoF;
-    }
-
-    /**
-     * Método distancia.
-     *
-     * @return Numero de aristas por las que hay que pasar
-     *         para ir desde el nodo Inicial hasta el nodo
-     *         Final.
+     * @return La distancia al nodo.
      */
     public int distancia() {
-        return this.dist;
+        return this.distancia;
     }
 
     /**
-     * Metodo pesoAcumulado.
+     * Metodo distancia - Peso total de todas las aristas.
      *
-     * @return Suma de los pesos de las aristas por las
-     *         que hay que pasar para ir desde nodoI
-     *         hasta nodoF.
+     * @return Peso total para llegar al nodo.
      */
-    public double pesoAcumulado() {
-        return this.pesoAcum;
+    public double peso() {
+        return this.peso;
+    }
+
+    /**
+     * Metodo vaDespuesDe - Comprueba si, en una lista,
+     *                      este nodo va antes que otro
+     *                      dado.
+     *
+     * @param n Nodo para comparar.
+     *
+     * @return True si este va despues del dado, sino
+     *         False.
+     *
+     * @remarks Esta funcion ordena segun la distancia,
+     *          yendo antes aquellos con menor distancia.
+     */
+    public boolean vaDespuesDe(NodoAlcanzable n) {
+        boolean vaDespues = false;
+
+        if(this.distancia > n.distancia) {
+            vaDespues = true;
+        } else if(this.distancia == n.distancia &&
+                    this.nodo > n.nodo) {
+            vaDespues = true;
+        }
+
+        return vaDespues;
+    }
+
+    /**
+     * Metodo vaDespuesDe - Comprueba si, en una lista,
+     *                      este nodo va antes que otro
+     *                      dado.
+     *
+     * @param n Nodo para comparar.
+     *
+     * @return True si este va despues del dado, sino
+     *         False.
+     *
+     * @remarks Esta funcion ordena segun el peso, yendo
+     *          antes aquellos con menor peso.
+     */
+    public boolean vaDespuesDeBis(NodoAlcanzable n) {
+        boolean vaDespues = false;
+
+        if(Math.abs(this.peso - n.peso) < 0.0001) {
+            if(this.nodo > n.nodo) {
+                vaDespues = true;
+            }
+        } else if(this.peso > n.peso) {
+            vaDespues = true;
+        }
+
+        return vaDespues;
     }
 }

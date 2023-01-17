@@ -27,27 +27,28 @@ public class Arista {
     }
 
     /**
-     * Método - obtenerNodoInicial
+     * Método nodoInicial - Nodo del que parte la arista.
      *
-     * @return Nodo del que parte la arista.
+     * @return Nodo inicial de la arista.
      */
     public int nodoInicial() {
         return this.nodoI;
     }
 
     /**
-     * Método - obtenerNodoFinal
+     * Método nodoFinal - Nodo en el que apunta la arista.
      *
-     * @return Nodo al que llega la arista.
+     * @return Nodo final de la arista.
      */
     public int nodoFinal() {
         return this.nodoF;
     }
 
     /**
-     * Método - obtenerPeso
+     * Método obtenerPeso - Coste de ir del nodo inicial
+     *                      al final.
      *
-     * @return Coste de ir de un nodo a otro.
+     * @return Peso de la arista.
      */
     public double peso() {
         return this.peso;
@@ -57,40 +58,38 @@ public class Arista {
      * Método mismaDireccionQue - Comprueba si las aristas
      *                            tienen el mismo inicio y
      *                            final.
-     *                            
+     *
      * @param a Arista a comprobar.
-     * 
+     *
      * @return True si esta arista y la arista a tienen la
      *         misma dirección, sino False.
      */
     public boolean mismaDireccionQue(Arista a) {
-        return this.nodoI == a.nodoI &&
-                this.nodoF == a.nodoF;
+        return this.nodoI == a.nodoI && this.nodoF == a.nodoF;
     }
-    
+
     /**
      * Método aristaVaDespuesDe - Comprueba si esta arista
      *                            va despues de otra dada.
      *
      * @param a Arista de referencia.
      *
-     * @return True si esta arista va despues de la arista a, 
-     *         sino False. Tambien devuelve False si la 
-     *         arista a es nulo o si ambas son tienen mismo
-     *         nodo inicial y final.     
+     * @return True si esta arista va despues de la arista 
+     *         a, sino False. Tambien devuelve False si la 
+     *         arista a es nulo o si ambas son tienen
+     *         mismo nodo inicial y final.     
      */
     public boolean vaDespuesDe(Arista a) {
         boolean vaDespues = false;
-        
+
         if(a != null) {
             if(this.nodoI > a.nodoI) {
                 vaDespues = true;
-            } else if(this.nodoI == a.nodoI &&
-                        this.nodoF > a.nodoF) {
+            } else if(this.nodoI == a.nodoI && this.nodoF > a.nodoF) {
                 vaDespues = true;
             }
         }
-        
-        return false;    
+
+        return vaDespues;
     }
 }
